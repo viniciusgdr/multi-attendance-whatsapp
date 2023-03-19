@@ -1,0 +1,34 @@
+{
+  "name": "@viniciusgdr/multi-attendance-whatsapp",
+  "version": "1.0.0",
+  "description": "Multi Attendance on WhatsApp",
+  "main": "build/main/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viniciusgdr/multi-attendance-whatsapp.git"
+  },
+  "keywords": [
+    "multi-attendance-whatsapp",
+    "whatsapp",
+    "bot"
+  ],
+  "author": "viniciusgdr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/viniciusgdr/multi-attendance-whatsapp/issues"
+  },
+  "homepage": "https://github.com/viniciusgdr/multi-attendance-whatsapp#readme",
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "eslint": "^8.36.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^5.0.2"
+  }
+}
