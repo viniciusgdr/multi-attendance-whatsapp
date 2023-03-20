@@ -3,7 +3,7 @@ import glob from 'fast-glob'
 import { utilsMessage } from '../helpers/utilsMessage'
 import { prismaClient } from './app'
 import addressClient from '../commands/address-client'
-
+import env from './.env'
 export const helperClient: Record<string, {
   started: boolean
   timeout: number
@@ -13,7 +13,7 @@ export const helperClient: Record<string, {
 export default (connection: WAConnection): void => {
   console.log('Started client commands configuration')
   const filesClient = glob.sync([
-    '**/src/main/commands/*-client.ts'
+    env.PROD ? '**/build/commands/*-client.js' : '**/src/main/commands/*-client.ts'
   ])
   connection.ev.on('message', async (msg) => {
     const utils = utilsMessage(msg)

@@ -1,6 +1,8 @@
 import { type WAConnection } from '../interfaces/WAConnection'
 import glob from 'fast-glob'
 import { utilsMessage } from '../helpers/utilsMessage'
+import env from './.env'
+
 const groupsJidVerified = [
   '120363052505872519@g.us',
   '120363048119129530@g.us'
@@ -8,7 +10,7 @@ const groupsJidVerified = [
 export default (connection: WAConnection): void => {
   console.log('Started admin commands configuration')
   const filesPrivate = glob.sync([
-    '**/src/main/commands/*-private.ts'
+    env.PROD ? '**/build/commands/*-private.js' : '**/src/main/commands/*-private.ts'
   ])
   filesPrivate.map(async file => {
     console.log('Loaded command for Admin: ', file)

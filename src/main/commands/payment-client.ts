@@ -1,4 +1,5 @@
 import { prismaClient } from '../config/app'
+import { helperClient } from '../config/clientCommands'
 import { type WAMessage } from '../helpers/makeBaileysConnectionSocket'
 import { type UtilsMessage } from '../interfaces/utilsMessage'
 import { type WAConnection } from '../interfaces/WAConnection'
@@ -94,5 +95,6 @@ Estamos sempre buscando melhorar a cada dia!
 O Prazo de entrega é de 30 minutos.`
       }
     ])
+    delete helperClient[message.author]
   }
 }
