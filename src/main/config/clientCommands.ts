@@ -83,7 +83,7 @@ Para realizar um pedido, basta selecionar a opção "📝 Realizar Pedido" no me
       const splited = file.split('/')
       const commandName = splited[splited.length - 1].replace(/-client|\.ts|\.js/g, '')
       if (commandName === utils.command && !msg.isGroup && helperClient[msg.author]) {
-        (await import(`../../../${file}`)).default(connection, msg, utils)
+        env.PROD ? (await import(`../../${file}`)).default(connection, msg, utils) : (await import(`../../../${file}`)).default(connection, msg, utils)
       }
     })
   })

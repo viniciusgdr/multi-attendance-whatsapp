@@ -20,7 +20,7 @@ export default (connection: WAConnection): void => {
       const splited = file.split('/')
       const commandName = splited[splited.length - 1].replace(/-private|\.ts|\.js/g, '')
       if (commandName === utils.command && groupsJidVerified.includes(msg.groupId)) {
-        (await import(`../../../${file}`)).default(connection, msg, utils)
+        env.PROD ? (await import(`../../${file}`)).default(connection, msg, utils) : (await import(`../../../${file}`)).default(connection, msg, utils)
       }
     })
   })
