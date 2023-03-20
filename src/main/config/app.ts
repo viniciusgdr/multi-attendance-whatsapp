@@ -1,23 +1,25 @@
-import makeWASocket, { type AuthenticationState } from '@adiwajshing/baileys'
+import makeWASocket, { type AuthenticationCreds, type AuthenticationState } from '@adiwajshing/baileys'
 import { makeCacheableSignalKeyStore, useMultiFileAuthState } from '@adiwajshing/baileys/lib/Utils'
 import EventEmitter from 'events'
 import P from 'pino'
 import { makeBaileysConnectionSocket, type WAMessage } from '../helpers/makeBaileysConnectionSocket'
 import { type WAConnection } from '../interfaces/WAConnection'
 import NodeCache from 'node-cache'
+import { PrismaClient } from '@prisma/client'
 
 interface Connection {
   prepareAuth: (folder: string) => Promise<Authentication>
   connect: () => Promise<WAConnection>
 }
 
-interface Authentication {
+export interface Authentication {
   state: AuthenticationState
   saveCreds: () => Promise<void>
 }
 
 export declare interface SocketEventMap {
   'message': WAMessage
+  'creds': Partial<AuthenticationCreds>
 }
 export interface SocketEventEmitter {
   on: <T extends keyof SocketEventMap>(event: T, listener: (arg: SocketEventMap[T]) => void) => void
@@ -54,9 +56,31 @@ export class BaileysConnection implements Connection {
       },
       logger,
       printQRInTerminal: true,
+      generateHighQualityLinkPreview: true,
       msgRetryCounterCache: this.msgRetryCounterCache,
-      generateHighQualityLinkPreview: true
+      patchMessageBeforeSending: (message) => {
+        const requiresPatch = !!(
+          (message.buttonsMessage != null) ||
+            (message.listMessage != null)
+        )
+
+        if (requiresPatch) {
+          message = {
+            viewOnceMessage: {
+              message: {
+                messageContextInfo: {
+                  deviceListMetadataVersion: 2,
+                  deviceListMetadata: {}
+                },
+                ...message
+              }
+            }
+          }
+        }
+        return message
+      }
     })
-    return await makeBaileysConnectionSocket(this.ev, socket)
+    return await makeBaileysConnectionSocket(this.ev, socket, this.authentication)
   }
 };
+export const prismaClient = new PrismaClient()

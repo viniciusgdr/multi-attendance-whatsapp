@@ -29,8 +29,8 @@ export async function processMessage (socket: WASocket, contactId: string, messa
           }),
           footer: message.footer,
           text: message.body,
-          mentions: message.mentions
-        }, { quoted: options?.quotedMessage })
+          mentions: message.mentions ?? []
+        })
       } else if (message.mediaType === 'video') {
         const messageMedia = message.messageMedia as MessageMedia
         await socket.sendMessage(contactId, {

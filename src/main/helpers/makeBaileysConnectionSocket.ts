@@ -4,7 +4,7 @@ import { fromBuffer } from 'file-type'
 import type core from 'file-type/core'
 import { unlinkSync, writeFileSync } from 'fs'
 import type internal from 'stream'
-import { type SocketEventEmitter } from '../config/app'
+import { type Authentication, type SocketEventEmitter } from '../config/app'
 import { type TypeMessage } from '../interfaces/type'
 import { type WAConnection } from '../interfaces/WAConnection'
 import { MessageMedia } from '../structures/MessageMedia'
@@ -75,7 +75,7 @@ export type Message = ({
   mentions?: string[]
 } & (Text | Button | List | Media | Sticker))
 
-export async function makeBaileysConnectionSocket (ev: SocketEventEmitter, socket: WASocket): Promise<WAConnection> {
+export async function makeBaileysConnectionSocket (ev: SocketEventEmitter, socket: WASocket, authentication: Authentication): Promise<WAConnection> {
   const info = (): {
     id: string
     imgUrl: string | null | undefined
@@ -97,6 +97,11 @@ export async function makeBaileysConnectionSocket (ev: SocketEventEmitter, socke
       msg.type === 'ephemeralMessage' && ((msg.message?.ephemeralMessage?.message) != null) ? msg.message = msg.message.ephemeralMessage.message : undefined
       ev.emit('message', msg)
     }
+  })
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  socket.ev.on('creds.update', async (arg) => {
+    await authentication.saveCreds()
+    ev.emit('creds', arg)
   })
   return {
     info: info(),

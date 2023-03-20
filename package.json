@@ -32,10 +32,13 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
+    "prisma": "^4.11.0",
     "typescript": "^5.0.2"
   },
   "dependencies": {
     "@adiwajshing/baileys": "github:adiwajshing/baileys",
+    "@prisma/client": "^4.11.0",
+    "fast-glob": "^3.2.12",
     "file-type": "^16.5.0",
     "fluent-ffmpeg": "^2.1.2",
     "mime": "^3.0.0",
